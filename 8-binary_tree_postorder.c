@@ -1,3 +1,5 @@
+#include "binary_trees.h"
+/**
  * binary_tree_postorder - print elements of tree using post-order traversal
  * @tree: tree to go through
  * @func: function to use
