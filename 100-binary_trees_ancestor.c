@@ -5,50 +5,19 @@
  *@tree: pointer to the node to measure the depth.
  * Return: if tree is NULL, function must return 0.
  */
-size_t binary_tree_depth(const binary_tree_t *tree)
-{
-	if (tree == NULL)
-		return (0);
-	else
-		return (1 + binary_tree_depth(tree->parent));
-}
-/**
- * binary_trees_ancestor - finds the lowest common ancestor of two nodes
- * @first: first node
- * @second: second node
- * Return: lowest common ancestor
- */
-binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
-				     const binary_tree_t *second)
-{
-	size_t height_f = 0, height_s = 0;
-	const binary_tree_t *aux = NULL;
+binary_tree_t *binary_trees_ancestor(const binary_tree_t *first, const binary_tree_t *second) {
+    /* Base cases */
+    if (first == NULL || second == NULL)
+        return NULL;
+    
+    if (first == second)
+        return (binary_tree_t *)first;
+    binary_tree_t *left_ancestor = binary_trees_ancestor(first->parent, second);
+    binary_tree_t *right_ancestor = binary_trees_ancestor(first, second->parent);
 
-	height_f = binary_tree_depth(first);
-	height_s = binary_tree_depth(second);
-	if (height_f && height_s)
-	{
-		if (height_f > height_s)
-		{
-			aux = first;
-			first = second;
-			second = aux;
-		}
-		while (first)
-		{
-			aux = second;
-			while (aux)
-			{
-				if (first == aux)
-					return ((binary_tree_t *)first);
-				aux = aux->parent;
-			}
-			first = first->parent;
-		}
-	}
-	else
-	{
-		return (NULL);
-	}
-	return (NULL);
+    if (left_ancestor && right_ancestor)
+        return (binary_tree_t *)first;
+    if (left_ancestor == NULL)
+        return right_ancestor;
+    return left_ancestor;
 }
